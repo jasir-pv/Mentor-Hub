@@ -16,15 +16,19 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="h-full w-72 bg-white shadow-lg p-5 flex flex-col justify-between">
+    <div className="h-screen w-72 bg-white rounded-3xl shadow-lg p-5 flex flex-col flex-1 justify-between">
       <div>
-        
-        <div className="space-y-2">
+      <div className="flex items-center justify-center space-x-2 mb-8 mt-8 w-1/"  >
+          <Image src="/college-logo.svg" alt="School App" width={30} height={30} />
+          <h1 className="text-xl font-bold">School App</h1>
+        </div>
+
+        <div className="space-y-4 mt-14">
           {menuItems.map((item) => (
             <button
               key={item.name}
               onClick={() => setActive(item.name)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg w-full transition duration-200 ${
+              className={`flex items-center space-x-4 px-4 py-2 rounded-lg w-full transition duration-200 ${
                 active === item.name ? 'bg-orange-100 text-orange-600' : 'hover:bg-gray-100'
               }`}
             >

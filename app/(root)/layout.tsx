@@ -12,7 +12,9 @@ const Layout = ({children}: {children: ReactNode}) => {
         
     //   </div>
     // </main>
-    <div className='w-screen h-screen'>
+    <div className='flex'>
+            <Sidebar  />
+            <Header />
         {children}
     </div>
   )
