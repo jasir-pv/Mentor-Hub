@@ -38,6 +38,7 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
+      
       <div className="space-y-2">
         <button className="flex items-center space-x-2 px-4 py-2 rounded-lg w-full hover:bg-gray-100">
           <FaCog />
