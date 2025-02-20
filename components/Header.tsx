@@ -7,19 +7,19 @@ const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <header className="bg-gray-100 dark:bg-gray-800 p-4 flex flex-2 justify-between items-center shadow-md rounded-lg">
+    <header className="bg-gray-100 dark:bg-gray-800 p-4 flex  justify-between items-center shadow-md rounded-lg gap-2">
       {/* Left Section: Dashboard Info */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-        <p className="text-gray-500 dark:text-gray-300 text-sm">19 February, 2024</p>
+        <h1 className="text-2xl md:text-xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+        <p className="text-gray-500 dark:text-gray-300 text-sm md:text-xs">19 February, 2024</p>
       </div>
 
-      {/* Center Section: Search Bar */}
+      {/*  Search Bar */}
       <div className="relative">
         <input
           type="text"
           placeholder="Search anything"
-          className="pl-10 pr-4 py-2 rounded-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md outline-none w-72"
+          className="pl-10 pr-4 py-2 rounded-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md outline-none w-72 md:w-52"
         />
         <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
       </div>
@@ -39,20 +39,22 @@ const Header = () => {
           <FaBell className="text-gray-500 dark:text-gray-300" />
         </button>
 
-        {/* Profile Section */}
-        <div className="flex items-center space-x-2 bg-white dark:bg-gray-700 p-2 rounded-full shadow-md cursor-pointer">
-          <Image
-            src="/profile.jpg"
-            alt="User Profile"
-            width={35}
-            height={35}
+
+     <div className="flex items-center gap-x-2">
+        <Image
+            src="/small.jpg"
+            alt="Profile"
+            width={40}
+            height={40}
             className="rounded-full"
-          />
-          <div className="text-sm">
-            <p className="font-semibold text-gray-900 dark:text-white">Jasir Ahsan Pv</p>
-            <p className="text-gray-500 dark:text-gray-300 text-xs">Sr. Lecturer</p>
-          </div>
+        />
+        <div className="hidden lg:block">
+            <p className="text-sm font-semibold">Jasir Ahsan Pv</p>
+            <p className="text-xs text-gray-500">Sr. Lecturer</p>
         </div>
+     </div>
+
+
       </div>
     </header>
   );
