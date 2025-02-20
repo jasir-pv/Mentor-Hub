@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { FaSearch, FaSun, FaMoon, FaBell } from 'react-icons/fa';
 import Image from 'next/image';
+import { MdKeyboardArrowRight } from 'react-icons/md';
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -14,33 +15,34 @@ const Header = () => {
         <p className="text-gray-500 dark:text-gray-300 text-sm md:text-xs">19 February, 2024</p>
       </div>
 
-      {/*  Search Bar */}
-      <div className="relative">
+     {/* Search Bar */}
+        <div className="relative flex items-center bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md rounded-full px-4 py-4 w-72">
+        <FaSearch className="absolute left-4 text-gray-400" />
         <input
-          type="text"
-          placeholder="Search anything"
-          className="pl-10 pr-4 py-2 rounded-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md outline-none w-72 md:w-52"
+            type="text"
+            placeholder="Search anything"
+            className="pl-10 w-full bg-transparent outline-none"
         />
-        <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
-      </div>
+        </div>
+
 
       {/* Right Section: Icons and Profile */}
       <div className="flex items-center space-x-4">
         {/* Light/Dark Mode Toggle */}
         <button
-          className="p-2 bg-white dark:bg-gray-700 rounded-full shadow-md"
+          className="p-4 bg-white dark:bg-gray-700 rounded-full shadow-md"
           onClick={() => setDarkMode(!darkMode)}
         >
           {darkMode ? <FaSun className="text-yellow-500" /> : <FaMoon className="text-gray-500" />}
         </button>
 
         {/* Notification Icon */}
-        <button className="p-2 bg-white dark:bg-gray-700 rounded-full shadow-md">
+        <button className="p-4 bg-white dark:bg-gray-700 rounded-full shadow-md">
           <FaBell className="text-gray-500 dark:text-gray-300" />
         </button>
 
 
-     <div className="flex items-center gap-x-2">
+     <div className="flex items-center gap-x-2 bg-white px-4 py-2 rounded-2xl">
         <Image
             src="/small.jpg"
             alt="Profile"
@@ -52,6 +54,7 @@ const Header = () => {
             <p className="text-sm font-semibold">Jasir Ahsan Pv</p>
             <p className="text-xs text-gray-500">Sr. Lecturer</p>
         </div>
+        <MdKeyboardArrowRight className='ml-2'/>
      </div>
 
 
