@@ -13,7 +13,7 @@ const Layout = ({children}: {children: ReactNode}) => {
     //   </div>
     // </main>
     <div className='flex h-screen p-2 '>
-        <div className="w-72 bg-white shadow-lg rounded-3xl">
+        <div className=" ">
               <Sidebar />
          </div>
        

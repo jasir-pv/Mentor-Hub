@@ -16,7 +16,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="h-screen w-72 md:w-64 bg-white rounded-3xl shadow-lg p-5 flex flex-col justify-between">
+    <div className="h-screen w-72 md:w-64 lg:w-72 bg-white rounded-3xl shadow-lg p-5 flex flex-col justify-between">
       <div>
       <div className="flex items-center justify-center space-x-2 mb-8 mt-8 w-1/"  >
           <Image src="/college-logo.svg" alt="School App" width={30} height={30} />

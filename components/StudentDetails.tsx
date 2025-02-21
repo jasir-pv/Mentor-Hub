@@ -15,6 +15,7 @@ import {
 
   const students = [
     {
+      id:1,  
       regNo: "ALBIR24 /12001",
       name: "Jasir Ahsan Pv",
       email: "jasirahsanpv40@gmail.com",
@@ -25,6 +26,32 @@ import {
       teacherPic: "/teacher-avt.jpg",
       status: "Joined",
     },
+
+    {
+        id:1,  
+        regNo: "ALBIR24 /12001",
+        name: "Jasir Ahsan Pv",
+        email: "jasirahsanpv40@gmail.com",
+        profilePic: "/student-avt.jpg", 
+        className: "Aliya Ula",
+        teacherName: "John Smith",
+        teacherEmail: "johnsmith@gmail.com",
+        teacherPic: "/teacher-avt.jpg",
+        status: "Joined",
+      },
+
+      {
+        id:1,  
+        regNo: "ALBIR24 /12001",
+        name: "Jasir Ahsan Pv",
+        email: "jasirahsanpv40@gmail.com",
+        profilePic: "/student-avt.jpg", 
+        className: "Aliya Ula",
+        teacherName: "John Smith",
+        teacherEmail: "johnsmith@gmail.com",
+        teacherPic: "/teacher-avt.jpg",
+        status: "Joined",
+      },
     // Repeat similar objects for multiple students
   ];
   
@@ -34,9 +61,8 @@ const StudentDetails = () => {
     <div>
         <h2 className='mt-6 mb-4'>Student Details</h2>
 
-   <Table className="rounded-lg border border-gray-200 shadow-md">
-      <TableCaption>Student Details</TableCaption>
-      <TableHeader className="bg-orange-200 rounded-2xl">
+   <Table className="rounded-3xl border border-gray-200 shadow-md">
+      <TableHeader className="bg-orange-200 rounded-3xl">
         <TableRow>
           <TableHead className="text-left">Reg No</TableHead>
           <TableHead className="text-left">Students</TableHead>
@@ -46,11 +72,11 @@ const StudentDetails = () => {
           <TableHead className="text-right">Action</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className=''>
         {students.map((student, index) => (
           <TableRow key={index} className="border-b">
             <TableCell>{student.regNo}</TableCell>
-            <TableCell className="flex items-center gap-2">
+            <TableCell className="flex items-center gap-2 p-5">
                <div className="rounded-full w-[40px] h-[40px] bg-slate-200 overflow-hidden flex items-start justify-center">
                   <Image src={student.profilePic} alt={student.name} width={40} height={40}  className='object-cover'/>            
                </div> 
