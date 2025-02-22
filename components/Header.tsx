@@ -42,7 +42,7 @@ const Header = () => {
         </button>
 
 
-     <div className="flex items-center gap-x-2 bg-white px-4 py-2 rounded-2xl">
+     <div className="flex items-center gap-x-2 bg-white lg:px-4 lg:py-2 md:p-0 sm:p-0  rounded-2xl">
         <Image
             src="/small.jpg"
             alt="Profile"
@@ -54,7 +54,7 @@ const Header = () => {
             <p className="text-sm font-semibold">Jasir Ahsan Pv</p>
             <p className="text-xs text-gray-500">Sr. Lecturer</p>
         </div>
-        <MdKeyboardArrowRight className='ml-2'/>
+        <MdKeyboardArrowRight className='ml-2 md:hidden sm:hidden lg:block block'/>
      </div>
 
 
