@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   FaTachometerAlt, FaUserGraduate, FaChalkboardTeacher, 
   FaMoneyBill, FaTools, FaBookOpen, FaCog, FaSignOutAlt 
@@ -10,7 +10,27 @@ import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 const Sidebar = () => {
   const [active, setActive] = useState('Dashboard');
   const [expand, setExpand] = useState(true);
-  const [hoveredItem, setHoveredItem] = useState(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+    // Set initial state based on screen size
+    useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth < 1024) { // lg breakpoint
+          setExpand(false);
+        } else {
+          setExpand(true);
+        }
+      };
+  
+      // Set initial state
+      handleResize();
+  
+      // Add event listener
+      window.addEventListener('resize', handleResize);
+  
+      // Cleanup
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
   const menuItems = [
     { name: 'Dashboard', icon: <FaTachometerAlt /> },
@@ -52,7 +72,7 @@ const Sidebar = () => {
               onMouseEnter={() => setHoveredItem(item.name)}
               onMouseLeave={() => setHoveredItem(null)}
               className={`flex items-center space-x-4 px-4 py-2 rounded-lg w-full transition duration-200 ${
-                active === item.name ? 'bg-orange-100 text-orange-600' : 'hover:bg-gray-100'
+                active === item.name ? 'bg-orange-100 text-orange-600 ' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-500'
               }`}
             >
                {item.icon}
@@ -60,7 +80,7 @@ const Sidebar = () => {
 
             {/* Tooltip when collapsed */}
             {!expand && hoveredItem === item.name && (
-              <span className="absolute left-16 bg-purple-300 text-white text-sm px-2 py-1 rounded-md z-10">
+              <span className="absolute left-16 bg-gray-400 text-white text-sm px-2 py-1 rounded-md z-10">
                 {item.name}
               </span>
             )}

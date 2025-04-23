@@ -8,20 +8,22 @@ const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <header className="bg-gray-100 dark:bg-gray-800 p-4 flex  justify-between items-center shadow-md rounded-lg gap-2">
+    <header className="bg-gray-100 dark:bg-gray-800 p-4 flex  justify-between items-center shadow-md rounded-lg gap-2 ">
       {/* Left Section: Dashboard Info */}
-      <div>
-        <h1 className="text-2xl md:text-xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+      <div className='hidden md:block'>
+        <h1 className="text-2xl md:text-xl font-bold text-gray-900 dark:text-white ">Dashboard</h1>
         <p className="text-gray-500 dark:text-gray-300 text-sm md:text-xs">19 February, 2024</p>
       </div>
 
      {/* Search Bar */}
-        <div className="relative flex items-center bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md rounded-full px-4 py-4 w-72">
+        <div className="relative flex items-center bg-white dark:bg-gray-700
+                       text-gray-900 dark:text-white shadow-md rounded-full 
+                       px-4 py-4 lg:w-96  xl:w-96 w-auto">
         <FaSearch className="absolute left-4 text-gray-400" />
         <input
             type="text"
             placeholder="Search anything"
-            className="pl-10 w-full bg-transparent outline-none"
+            className="pl-10 w-full bg-transparent outline-none  "
         />
         </div>
 
