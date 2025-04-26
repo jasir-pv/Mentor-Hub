@@ -1,3 +1,4 @@
+import RoundChart from "@/components/Chart";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Stats from "@/components/Stats";
@@ -9,7 +10,8 @@ export default function Home() {
   return (
    <div>
       <Stats />
-      <StudentDetails />
+      {/* <StudentDetails /> */}
+      <RoundChart />
    </div>
   );
 }
