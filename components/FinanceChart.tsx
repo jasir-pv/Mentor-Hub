@@ -18,9 +18,9 @@ const data = [
   { name: 'Dec', income: 2390, expense: 3800 },
 ];
 
-type Props = {}
 
-const FinanceChart = (props: Props) => {
+
+const FinanceChart = () => {
   return (
     <div className="p-4 bg-white rounded-lg shadow-md mt-4">
       <h1 className="text-xl font-bold mb-4">Finance Overview</h1>

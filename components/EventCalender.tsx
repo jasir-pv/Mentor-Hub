@@ -4,12 +4,10 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // Keep minimal default styles
 import './tailwind-calendar.css'; // Very small reset we'll add
-import { div } from 'framer-motion/client';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-type Props = {}
 
 const events= [
     {
@@ -32,7 +30,7 @@ const events= [
     }
 ]
 
-const EventCalendar = (props: Props) => {
+const EventCalendar = () => {
   const [value, onChange] = useState<Value>(new Date());
 
   return (

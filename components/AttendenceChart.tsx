@@ -11,9 +11,9 @@ const data = [
   { name: 'Fri', present: 55, absent: 45 },
 ];
 
-type Props = {}
 
-const AttendanceChart = (props: Props) => {
+
+const AttendanceChart = ( ) => {
   return (
     <div className="bg-white rounded-xl p-4 shadow-md w-full max-w-[700px] min-w-[300px] h-[350px]">
       {/* Title */}

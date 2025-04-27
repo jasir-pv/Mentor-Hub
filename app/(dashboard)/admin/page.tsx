@@ -5,9 +5,9 @@ import FinanceChart from '@/components/FinanceChart'
 import Stats from '@/components/Stats'
 import React from 'react'
 
-type Props = {}
 
-const AdminPage = (props: Props) => {
+
+const AdminPage = () => {
   return (
     <div className='mt-4 flex justify-between'>
 
