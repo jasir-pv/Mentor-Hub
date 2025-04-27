@@ -57,7 +57,7 @@ const Stats = () => {
         <h3 className='text-lg font-medium'>Teachers</h3>
         <div className='flex h-44 rounded-2xl bg-white w-64 mt-2'>
           <div className="relative flex flex-col gap-x-4 h-full">
-            <div className='absolute rounded-full p-2 mt-6 ml-6 bg-green-800'>
+            <div className='absolute rounded-full p-2 mt-6 ml-6 bg-[#59b3ef]'>
               <RxAvatar className='text-white w-[30px] h-[30px]'/>
             </div>
             <div className='ml-6 mt-24'>
