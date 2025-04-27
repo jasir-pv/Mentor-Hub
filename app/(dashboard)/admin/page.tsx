@@ -28,7 +28,7 @@ const AdminPage = (props: Props) => {
     </div>
 
     {/* Right side Calender */}
-    <div className='hidden sm:block md:block'>
+    <div className='hidden lg:block'>
         <EventCalender />
     </div>
 

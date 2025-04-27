@@ -15,7 +15,7 @@ type Props = {}
 
 const AttendanceChart = (props: Props) => {
   return (
-    <div className="bg-white rounded-xl p-4 shadow-md w-full max-w-[700px] h-[350px]">
+    <div className="bg-white rounded-xl p-4 shadow-md w-full max-w-[700px] min-w-[300px] h-[350px]">
       {/* Title */}
       <h1 className="text-gray-700 font-semibold mb-4">Attendance</h1>
 

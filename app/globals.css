@@ -75,3 +75,8 @@ body {
   @apply bg-gray-100; /* Change to any Tailwind color */
 }
 
+
+.react-calendar {
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
