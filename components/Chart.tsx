@@ -18,7 +18,7 @@ const data = [
 
 const RoundChart = () => {
   return (
-    <div className="w-full flex flex-col aspect-square max-w-[300px] p-4 bg-white rounded-xl shadow-md mt-4">
+    <div className="w-full flex flex-col aspect-square max-w-[300px] h-[350px] p-4 bg-white rounded-xl shadow-md">
       <h2 className="text-center font-semibold text-gray-700 mb-4">Students</h2>    
 
       <div className="relative w-full h-64">
@@ -48,7 +48,7 @@ const RoundChart = () => {
       </div>
 
       {/* Labels */}
-      <div className="flex justify-center gap-8 mt-4 text-sm text-gray-600">
+      <div className="flex justify-center gap-8 mt-2 text-sm text-gray-600">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-[#8ac9f3]"></span>
           <div className="flex flex-col">

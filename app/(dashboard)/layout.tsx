@@ -21,7 +21,7 @@ const Layout = ({children}: {children: ReactNode}) => {
         <div className="w-full ">
           <Header />
         </div>
-        <div className="flex-1 p-6">{children}</div>
+        <div className="flex-1 p-1">{children}</div>
       </div>
     </div>
   )

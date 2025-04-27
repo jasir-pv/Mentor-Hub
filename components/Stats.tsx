@@ -4,21 +4,21 @@ import { RxAvatar } from 'react-icons/rx';
 import { useEffect, useState } from 'react';
 
 interface StatsData {
-    students: {
-      total: number;
-      active: number;
-    };
-    teachers: {
-      total: number;
-      active: number;
-    };
-  }
+  students: {
+    total: number;
+    active: number;
+  };
+  teachers: {
+    total: number;
+    active: number;
+  };
+}
 
 const Stats = () => {
-    const [stats, setStats] = useState<StatsData>({
-        students: { total: 0, active: 0 },
-        teachers: { total: 0, active: 0 }
-      });
+  const [stats, setStats] = useState<StatsData>({
+    students: { total: 0, active: 0 },
+    teachers: { total: 0, active: 0 }
+  });
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -35,36 +35,32 @@ const Stats = () => {
   }, []);
 
   return (
-    <div className='flex gap-8'>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
       {/* Students */}
-      <div>
-        <h3 className='text-lg font-medium'>Students</h3>
-        <div className='flex h-44 rounded-2xl bg-white w-64 mt-2'>
-          <div className="relative flex flex-col gap-x-4 h-full">
-            <div className='absolute rounded-full p-2 mt-6 ml-6 bg-orange-600'>
-              <RxAvatar className='text-white w-[30px] h-[30px]'/>
-            </div>
-            <div className='ml-6 mt-24'>
-              <p>Total Students = {stats.students.total}</p>
-              <p>Active Students = {stats.students.active}</p>
-            </div>
-          </div>  
+      <div className="p-6 bg-white rounded-2xl shadow-md flex flex-col justify-between">
+        <div className="flex items-center gap-4">
+          <div className="bg-orange-600 p-3 rounded-full">
+            <RxAvatar className="text-white w-8 h-8" />
+          </div>
+          <h3 className="text-xl font-semibold">Students</h3>
+        </div>
+        <div className="mt-6 space-y-2">
+          <p className="text-gray-700">Total Students: <span className="font-bold">{stats.students.total}</span></p>
+          <p className="text-gray-700">Active Students: <span className="font-bold">{stats.students.active}</span></p>
         </div>
       </div>
 
       {/* Teachers */}
-      <div>
-        <h3 className='text-lg font-medium'>Teachers</h3>
-        <div className='flex h-44 rounded-2xl bg-white w-64 mt-2'>
-          <div className="relative flex flex-col gap-x-4 h-full">
-            <div className='absolute rounded-full p-2 mt-6 ml-6 bg-[#59b3ef]'>
-              <RxAvatar className='text-white w-[30px] h-[30px]'/>
-            </div>
-            <div className='ml-6 mt-24'>
-              <p>Total Teachers = {stats.teachers.total}</p>
-              <p>Active Teachers = {stats.teachers.active}</p>
-            </div>
-          </div>  
+      <div className="p-6 bg-white rounded-2xl shadow-md flex flex-col justify-between">
+        <div className="flex items-center gap-4">
+          <div className="bg-[#59b3ef] p-3 rounded-full">
+            <RxAvatar className="text-white w-8 h-8" />
+          </div>
+          <h3 className="text-xl font-semibold">Teachers</h3>
+        </div>
+        <div className="mt-6 space-y-2">
+          <p className="text-gray-700">Total Teachers: <span className="font-bold">{stats.teachers.total}</span></p>
+          <p className="text-gray-700">Active Teachers: <span className="font-bold">{stats.teachers.active}</span></p>
         </div>
       </div>
     </div>
