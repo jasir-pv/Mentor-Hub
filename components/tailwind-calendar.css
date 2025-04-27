@@ -1,0 +1,7 @@
+/* tailwind-calendar.css */
+/* Just basic reset so default react-calendar doesn't mess up */
+.react-calendar {
+    border: none;
+    font-family: 'Inter', sans-serif;
+  }
+  
