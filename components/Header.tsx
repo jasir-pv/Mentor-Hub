@@ -3,12 +3,32 @@ import { useState } from 'react';
 import { FaSearch, FaSun, FaMoon, FaBell } from 'react-icons/fa';
 import Image from 'next/image';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 
-const Header = () => {
+
+interface HeaderProps {
+  expand: boolean;
+  setExpand: (expand: boolean) => void;
+}
+
+
+const Header = ({ expand, setExpand }: HeaderProps) => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
     <header className="bg-gray-100 dark:bg-gray-800 p-4 flex  justify-between items-center shadow-md rounded-lg gap-2 ">
+
+           <button 
+              onClick={() => setExpand(!expand)}
+              className="sm:block md:hidden p-2 rounded-lg hover:bg-gray-200"
+            >
+              {expand ? (
+                <GoSidebarCollapse className="w-5 h-5" />
+              ) : (
+                <GoSidebarExpand className="w-5 h-5" />
+              )}
+            </button>
+
       {/* Left Section: Dashboard Info */}
       <div className='hidden md:block'>
         <h1 className="text-2xl md:text-xl font-bold text-gray-900 dark:text-white ">Dashboard</h1>

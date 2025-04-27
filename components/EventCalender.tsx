@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // Keep minimal default styles
 import './tailwind-calendar.css'; // Very small reset we'll add
+import Announcement from './Announcement';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -54,7 +55,7 @@ const EventCalendar = () => {
       {/* Events */}
 
       <div className='flex flex-col gap-2'>
-        <h2 className='mt-3 font-semibold text-green'>Events</h2>
+        <h2 className='mt-3 font-semibold text-cyan-700'>Events</h2>
             {events.map(event => {
                 return (
                 <div className='p-4 bg-gray-100 rounded-xl' key={event.id}>
@@ -65,6 +66,7 @@ const EventCalendar = () => {
                 )
             })}
             </div>
+            <Announcement />
 
     </div>
   );

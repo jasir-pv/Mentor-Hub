@@ -7,9 +7,15 @@ import {
 import Image from 'next/image';
 import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 
-const Sidebar = () => {
+
+type SidebarProps = {
+  expand: boolean;
+  setExpand: (expand: boolean) => void;
+};
+
+
+const Sidebar = ({ expand, setExpand }: SidebarProps) => {
   const [active, setActive] = useState('Dashboard');
-  const [expand, setExpand] = useState(true);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
     // Set initial state based on screen size
@@ -49,7 +55,7 @@ const Sidebar = () => {
         <div className={`flex items-center justify-between mb-8 mt-8  ${expand ? '' : 'flex-col-reverse gap-4 mt-1'}`}>
           <div className="flex items-center space-x-2">
             <Image src="/college-logo.svg" alt="School App" width={30} height={30} />
-            {expand && <h1 className="text-xl font-bold">School App</h1>}
+            {expand && <h1 className="text-xl font-bold">Mentor Hub</h1>}
           </div>
           <button 
                 onClick={() => setExpand(!expand)} 
