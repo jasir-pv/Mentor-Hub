@@ -12,16 +12,16 @@ const Layout = ({children}: {children: ReactNode}) => {
         
     //   </div>
     // </main>
-    <div className='flex h-screen p-2 '>
+    <div className='flex h-screen p-2 overflow-hidden'>
         <div className=" ">
               <Sidebar />
          </div>
        
       <div className="flex-1 flex flex-col mx-3 my-2">      
-        <div className="w-full ">
+        <div className="w-full">
           <Header />
         </div>
-        <div className="flex-1 p-1">{children}</div>
+        <div className="flex-1 p-1 overflow-y-auto">{children}</div>
       </div>
     </div>
   )

@@ -53,7 +53,8 @@ const EventCalendar = () => {
 
       {/* Events */}
 
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-2'>
+        <h2 className='mt-3 font-semibold text-green'>Events</h2>
             {events.map(event => {
                 return (
                 <div className='p-4 bg-gray-100 rounded-xl' key={event.id}>

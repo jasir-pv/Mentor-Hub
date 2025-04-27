@@ -42,7 +42,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className={`h-screen ${expand ? 'w-72 ' : ''} bg-white rounded-3xl shadow-lg p-5 flex flex-col justify-between transition-all duration-300 ease-in-out`}>
+    <div className={`h-screen ${expand ? 'w-72 ' : ''} position-fixed bg-white rounded-3xl shadow-lg p-5 flex flex-col justify-between transition-all duration-300 ease-in-out`}>
       
       {/* Logo & Expand Button */}
       <div>
