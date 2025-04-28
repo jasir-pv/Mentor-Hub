@@ -1,19 +1,20 @@
-'use client';
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
-import { ReactNode, useEffect, useState } from 'react';
+'use client'
+import Header from '@/components/Header'
+import Sidebar from '@/components/Sidebar'
+import React, { ReactNode, useEffect, useState } from 'react'
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-const Layout = ({ children }: LayoutProps) => {
-  const [expand, setExpand] = useState(false);
+const Layout = ({children}: {children: ReactNode}) => {
+  const [expand, setExpand] = useState(true); // Default expanded on desktop
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      // Auto-expand only on large screens (lg and up)
-      setExpand(window.innerWidth >= 1024);
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      // On desktop (LG+), always keep expanded but allow toggle
+      if (!mobile) {
+        setExpand(true); // Force expanded state on desktop
+      }
     };
 
     handleResize();
@@ -22,40 +23,47 @@ const Layout = ({ children }: LayoutProps) => {
   }, []);
 
   return (
-    <div className="relative flex h-screen overflow-hidden bg-gray-50">
-      {/* Overlay (mobile only) */}
-      {expand && (
-        <div 
-          className="fixed inset-0 z-20 bg-black/50 lg:hidden" 
-          onClick={() => setExpand(false)}
-        />
+    <div className='relative flex h-screen overflow-hidden'>
+      {/* Mobile Overlay and Sidebar (SM/MD only) */}
+      {isMobile && (
+        <>
+          {expand && (
+            <div 
+              className="fixed inset-0 z-20 bg-black/50"
+              onClick={() => setExpand(false)}
+            />
+          )}
+          <div className={`fixed z-30 h-full transition-transform duration-300 ease-in-out
+            ${expand ? 'translate-x-0' : '-translate-x-full'} w-72
+          `}>
+            <Sidebar expand={true} setExpand={setExpand} />
+          </div>
+        </>
       )}
 
-      {/* Sidebar - fixed on mobile, normal on desktop */}
-      <div className={`
-        fixed lg:relative
-        z-30
-        h-full
-        transition-transform duration-300 ease-in-out
-        ${expand ? 'translate-x-0 w-72' : '-translate-x-full lg:translate-x-0 lg:w-20'}
-      `}>
-        <Sidebar expand={expand} setExpand={setExpand} />
-      </div>
+      {/* Desktop Sidebar (LG and up) */}
+      {!isMobile && (
+        <div className={` h-full ${expand ? 'w-72' : 'w-20'} transition-all duration-300
+        `}>
+          <Sidebar expand={expand} setExpand={setExpand} />
+        </div>
+      )}
+       
+      {/* Main content area */}
+      <div className={` flex-1 flex flex-col transition-all duration-300
+        ${isMobile ? 'ml-0' : 'ml-3'} h-full overflow-hidden `}>
 
-      {/* Main content */}
-      <div className={`
-        flex-1 flex flex-col
-        transition-margin duration-300 ease-in-out
-        ${expand ? 'lg:ml-72' : 'lg:ml-20'}
-        h-full overflow-auto
-      `}>
-        <Header expand={expand} setExpand={setExpand} />
-        <main className="flex-1 p-4">
+        <div className="">
+          <Header expand={expand} setExpand={setExpand} isMobile={isMobile} />
+        </div>
+
+
+        <main className="flex-1 p-4 overflow-y-auto">
           {children}
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

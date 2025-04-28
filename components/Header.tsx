@@ -9,26 +9,28 @@ import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 interface HeaderProps {
   expand: boolean;
   setExpand: (expand: boolean) => void;
+  isMobile: boolean;
 }
 
 
-const Header = ({ expand, setExpand }: HeaderProps) => {
+const Header = ({ expand, setExpand, isMobile }: HeaderProps) => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <header className="bg-gray-100 dark:bg-gray-800 p-4 flex  justify-between items-center shadow-md rounded-lg gap-2 ">
+    <header className="bg-gray-100 dark:bg-gray-800 p-4 flex  justify-between items-center shadow-md rounded-lg gap-2">
 
+          {isMobile && (
            <button 
               onClick={() => setExpand(!expand)}
-              className="sm:block md:hidden p-2 rounded-lg hover:bg-gray-200"
+              className="sm:block lg:hidden p-2 rounded-lg hover:bg-gray-200 text-gray-400"
             >
               {expand ? (
-                <GoSidebarCollapse className="w-5 h-5" />
+                <GoSidebarExpand className="w-6 h-6" />
               ) : (
-                <GoSidebarExpand className="w-5 h-5" />
+                <GoSidebarCollapse className="w-6 h-6" />
               )}
             </button>
-
+          )}
       {/* Left Section: Dashboard Info */}
       <div className='hidden md:block'>
         <h1 className="text-2xl md:text-xl font-bold text-gray-900 dark:text-white ">Dashboard</h1>
