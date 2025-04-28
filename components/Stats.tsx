@@ -35,7 +35,7 @@ const Stats = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {/* Students */}
       <div className="p-6 bg-white rounded-2xl shadow-md flex flex-col justify-between">
         <div className="flex items-center gap-4">

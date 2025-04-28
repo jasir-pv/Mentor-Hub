@@ -51,14 +51,14 @@ const Layout = ({children}: {children: ReactNode}) => {
        
       {/* Main content area */}
       <div className={` flex-1 flex flex-col transition-all duration-300
-        ${isMobile ? 'ml-0' : 'ml-3'} h-full overflow-hidden `}>
+        ${isMobile ? 'ml-0' : 'ml-3'} h-full overflow-hidden  `}>
 
-        <div className="">
+        <div className="sticky top-0 z-10 bg-white shadow">
           <Header expand={expand} setExpand={setExpand} isMobile={isMobile} />
         </div>
 
 
-        <main className="flex-1 p-4 overflow-y-auto">
+        <main className="flex-1  overflow-y-auto">
           {children}
         </main>
       </div>
