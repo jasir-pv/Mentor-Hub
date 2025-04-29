@@ -134,3 +134,131 @@ export interface Student {
       status: "Pending"
     }
   ];
+
+
+
+  // teachers-data.ts
+export interface Teacher {
+    id: number;
+    emp_id: string;
+    name: string;
+    email: string;
+    profile_pic: string;
+    department: string;
+    subjects: string[];
+    classes_handled: string[];
+    status: 'Active' | 'On Leave' | 'Inactive';
+  }
+  
+  export const dummyTeachers: Teacher[] = [
+    {
+      id: 1,
+      emp_id: "T1001",
+      name: "Sarah Johnson",
+      email: "sarah.johnson@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Computer Science",
+      subjects: ["Data Structures", "Algorithms"],
+      classes_handled: ["AlB8R24", "AlB8R25"],
+      status: "Active"
+    },
+    {
+      id: 2,
+      emp_id: "T1002",
+      name: "Michael Brown",
+      email: "michael.brown@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Mathematics",
+      subjects: ["Calculus", "Linear Algebra"],
+      classes_handled: ["AlB8R26", "AlB8R27"],
+      status: "Active"
+    },
+    {
+      id: 3,
+      emp_id: "T1003",
+      name: "Lisa Williams",
+      email: "lisa.williams@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Physics",
+      subjects: ["Quantum Mechanics", "Thermodynamics"],
+      classes_handled: ["AlB8R28"],
+      status: "On Leave"
+    },
+    {
+      id: 4,
+      emp_id: "T1004",
+      name: "David Miller",
+      email: "david.miller@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Chemistry",
+      subjects: ["Organic Chemistry", "Biochemistry"],
+      classes_handled: ["AlB8R24", "AlB8R28"],
+      status: "Active"
+    },
+    {
+      id: 5,
+      emp_id: "T1005",
+      name: "Jennifer Davis",
+      email: "jennifer.davis@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Biology",
+      subjects: ["Genetics", "Microbiology"],
+      classes_handled: ["AlB8R25", "AlB8R26"],
+      status: "Inactive"
+    },
+    {
+      id: 6,
+      emp_id: "T1006",
+      name: "Robert Wilson",
+      email: "robert.wilson@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "English",
+      subjects: ["Literature", "Creative Writing"],
+      classes_handled: ["AlB8R27"],
+      status: "Active"
+    },
+    {
+      id: 7,
+      emp_id: "T1007",
+      name: "Patricia Anderson",
+      email: "patricia.anderson@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "History",
+      subjects: ["World History", "European History"],
+      classes_handled: ["AlB8R24", "AlB8R28"],
+      status: "Active"
+    },
+    {
+      id: 8,
+      emp_id: "T1008",
+      name: "James Thomas",
+      email: "james.thomas@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Economics",
+      subjects: ["Microeconomics", "Macroeconomics"],
+      classes_handled: ["AlB8R25", "AlB8R26"],
+      status: "On Leave"
+    },
+    {
+      id: 9,
+      emp_id: "T1009",
+      name: "Elizabeth White",
+      email: "elizabeth.white@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Psychology",
+      subjects: ["Cognitive Psychology", "Abnormal Psychology"],
+      classes_handled: ["AlB8R27"],
+      status: "Active"
+    },
+    {
+      id: 10,
+      emp_id: "T1010",
+      name: "Charles Lewis",
+      email: "charles.lewis@example.com",
+      profile_pic: "/teacher-avt.jpg",
+      department: "Philosophy",
+      subjects: ["Ethics", "Metaphysics"],
+      classes_handled: ["AlB8R28"],
+      status: "Active"
+    }
+  ];

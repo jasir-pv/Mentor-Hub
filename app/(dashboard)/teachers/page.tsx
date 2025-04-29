@@ -1,9 +1,12 @@
+import TeacherDetails from '@/components/TeachersDetails'
 import React from 'react'
 
 
 const TeacherPage = ( ) => {
   return (
-    <div>TeacherPage</div>
+    <div>
+      <TeacherDetails />
+    </div>
   )
 }
 

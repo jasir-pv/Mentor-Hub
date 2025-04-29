@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { MdDelete } from "react-icons/md";
 
 // Define the Student interface
 
@@ -23,7 +24,7 @@ const StudentDetails = () => {
 
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-hidden max-h-[700px]">
         <Table className="w-full max-h-12">
-          <TableHeader className="bg-orange-200">
+          <TableHeader className="bg-orange-100">
             <TableRow>
               <TableHead className="text-left p-4">Reg No</TableHead>
               <TableHead className="text-left p-4">Students</TableHead>
@@ -75,15 +76,18 @@ const StudentDetails = () => {
                   </TableCell>
                   <TableCell className="p-4">
                     <Button className={`px-3 py-1 rounded-md ${
-                      student.status === 'Joined' ? 'bg-green-500' : 
-                      student.status === 'Pending' ? 'bg-yellow-500' : 'bg-gray-500'
+                      student.status === 'Joined' ? 'bg-green-300' : 
+                      student.status === 'Pending' ? 'bg-yellow-300' : 'bg-gray-300'
                     } text-white`}>
                       {student.status}
                     </Button>
                   </TableCell>
-                  <TableCell className="p-4 text-right">
+                  <TableCell className="p-4 text-right ">
                     <Button variant="outline" className="p-2">
                       <FaEdit className="text-gray-500" />
+                    </Button>
+                    <Button variant="outline" className="p-2 ml-2">
+                      <MdDelete className="text-red-500" />
                     </Button>
                   </TableCell>
                 </TableRow>
