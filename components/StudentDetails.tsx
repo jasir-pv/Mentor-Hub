@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
 import Image from "next/image";
-import { useEffect, useState } from 'react';
+import { dummyStudents } from "@/lib/data";
 import {
   Table,
   TableBody,
@@ -14,57 +14,14 @@ import {
 } from "@/components/ui/table"
 
 // Define the Student interface
-interface Student {
-  id: number;
-  reg_no: string;
-  name: string;
-  email: string;
-  profile_pic: string;
-  class_name: string;
-  teacher_name: string;
-  teacher_email: string;
-  teacher_pic: string;
-  status: string;
-}
+
 
 const StudentDetails = () => {
-  const [students, setStudents] = useState<Student[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await fetch('/api/students');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: Student[] = await response.json();
-        setStudents(data);
-      } catch (error) {
-        console.error('Error fetching students:', error);
-        setError(error instanceof Error ? error.message : 'Failed to fetch students');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStudents();
-  }, []);
-
-  if (loading) {
-    return <div className="p-4">Loading student data...</div>;
-  }
-
-  if (error) {
-    return <div className="p-4 text-red-500">Error: {error}</div>;
-  }
-
   return (
     <div className="">
       <h2 className="mt-4 mb-3 text-xl font-semibold">Student Details</h2>
 
-      <div className="rounded-3xl border border-gray-200 shadow-md overflow-hidden max-h-[345px]">
+      <div className="rounded-2xl border border-gray-200 shadow-md overflow-hidden max-h-[700px]">
         <Table className="w-full max-h-12">
           <TableHeader className="bg-orange-200">
             <TableRow>
@@ -77,16 +34,16 @@ const StudentDetails = () => {
             </TableRow>
           </TableHeader>
           <TableBody className="mt-2 bg-white">
-            {students.length > 0 ? (
-              students.map((student) => (
+            {dummyStudents.length > 0 ? (
+              dummyStudents.map((student) => (
                 <TableRow key={student.id} className="border-b">
                   <TableCell className="p-4">{student.reg_no}</TableCell>
                   <TableCell className="p-4">
                     <div className="flex items-center gap-2">
                       <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
-                        <Image 
-                          src={student.profile_pic || '/student-avt.jpg'} 
-                          alt={student.name} 
+                        <Image
+                          src={student.profile_pic}
+                          alt="student"
                           width={40} 
                           height={40} 
                           className="object-cover" 
@@ -103,15 +60,15 @@ const StudentDetails = () => {
                     <div className="flex items-center gap-2">
                       <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
                         <Image 
-                          src={student.teacher_pic || '/teacher-avt.jpg'} 
-                          alt={student.teacher_name} 
+                          src={student.teacher_pic}
+                          alt='teacher'
                           width={40} 
                           height={40} 
                           className="object-cover" 
                         />
                       </div>
                       <div>
-                        <p className="font-medium">{student.teacher_name} || Jasir</p>
+                        <p className="font-medium">{student.teacher_name}</p>
                         <p className="text-xs text-gray-500">{student.teacher_email}</p>
                       </div>
                     </div>
