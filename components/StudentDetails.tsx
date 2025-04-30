@@ -19,9 +19,15 @@ import { MdDelete } from "react-icons/md";
 
 const StudentDetails = () => {
   return (
-    <div className="">
-      <h2 className="mt-4 mb-3 text-xl font-semibold">Student Details</h2>
+    <div className="relative">
+        <div className="flex justify-between">
+              <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
 
+              <button className="  rounded-lg px-2 py-1 mr-8 h-8 mt-4
+              bg-cyan-500 flex items-center justify-center">
+                      <p className="text-white font-medium text-sm">Add Students</p>
+              </button>
+        </div>
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-hidden max-h-[700px]">
         <Table className="w-full max-h-12">
           <TableHeader className="bg-orange-100">
@@ -102,6 +108,8 @@ const StudentDetails = () => {
           </TableBody>
         </Table>
       </div>
+
+     
     </div>
   )
 }
