@@ -1,22 +1,39 @@
 'use client'
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import Image from "next/image";
-import { dummyTeachers } from "@/lib/data";
+import { dummyTeachers as initialData } from "@/lib/data";
 
 const TeacherDetails = () => {
+  const [teachers, setTeachers] = useState(initialData);
+
+  const handleDelete = (id: number) => {
+    const teacherToDelete = teachers.find((teacher) => teacher.id === id);
+    const confirmDelete = window.confirm(`Are you sure you want to delete ${teacherToDelete?.name}?`);
+  
+    if (confirmDelete) {
+      setTeachers((prev) => prev.filter((teacher) => teacher.id !== id));
+      alert(`Teacher ${teacherToDelete?.name} deleted successfully.`);
+    }
+  };
+  
+
+  const handleEdit = (teacher: any) => {
+    alert(`Editing teacher: ${teacher.name}`);
+    // You can open a modal or navigate to an edit page here
+  };
+
   return (
-    <div className="">
-        <div className="flex justify-between">
-      <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+    <div>
+      <div className="flex justify-between">
+        <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+        <button className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center">
+          <p className="text-white font-medium text-sm">Add Teachers</p>
+        </button>
+      </div>
 
-      <button className="  rounded-lg px-2 py-1 mr-8 h-8 mt-4
-       bg-cyan-500 flex items-center justify-center">
-              <p className="text-white font-medium text-sm">Add Teachers</p>
-      </button>
-
-        </div>
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-x-auto overflow-y-hidden h-full">
         <table className="w-full max-h-12">
           <thead className="bg-orange-100">
@@ -31,19 +48,19 @@ const TeacherDetails = () => {
             </tr>
           </thead>
           <tbody className="mt-2 bg-white">
-            {dummyTeachers.length > 0 ? (
-              dummyTeachers.map((teacher) => (
+            {teachers.length > 0 ? (
+              teachers.map((teacher) => (
                 <tr key={teacher.id} className="border-b">
-                  <td className="p-4"><p className="text-sm">{teacher.emp_id}</p></td>
+                  <td className="p-4 text-sm">{teacher.emp_id}</td>
                   <td className="p-4">
                     <div className="flex items-center gap-2">
                       <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
                         <Image
                           src={teacher.profile_pic}
                           alt="teacher"
-                          width={40} 
-                          height={40} 
-                          className="object-cover" 
+                          width={40}
+                          height={40}
+                          className="object-cover"
                         />
                       </div>
                       <div>
@@ -52,7 +69,7 @@ const TeacherDetails = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="p-4"><p className="text-sm">{teacher.department}</p></td>
+                  <td className="p-4 text-sm">{teacher.department}</td>
                   <td className="p-4">
                     <div className="flex flex-col">
                       {teacher.subjects.map((subject, index) => (
@@ -68,35 +85,33 @@ const TeacherDetails = () => {
                     </div>
                   </td>
                   <td className="p-4">
-                    <Button className={`px-2 py-0  text-[12px] rounded-md ${
-                      teacher.status === 'Active' ? 'bg-green-500' : 
+                    <Button className={`px-2 py-0 text-[12px] rounded-md ${
+                      teacher.status === 'Active' ? 'bg-green-500' :
                       teacher.status === 'On Leave' ? 'bg-yellow-500' : 'bg-gray-500'
                     } text-white`}>
                       {teacher.status}
                     </Button>
                   </td>
-                  <td className="p-4 text-right">
-                    <Button variant="outline" className="p-2">
+                  <td className="p-4 text-right flex gap-2 justify-end">
+                    <Button variant="outline" className="p-2" onClick={() => handleEdit(teacher)}>
                       <FaEdit className="text-gray-500" />
+                    </Button>
+                    <Button variant="outline" className="p-2" onClick={() => handleDelete(teacher.id)}>
+                      <FaTrash className="text-red-500" />
                     </Button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="text-center p-4">
-                  No teachers found
-                </td>
+                <td colSpan={7} className="text-center p-4">No teachers found</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-
-
-
     </div>
-  )
-}
+  );
+};
 
 export default TeacherDetails;

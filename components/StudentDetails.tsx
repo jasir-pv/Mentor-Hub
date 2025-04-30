@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
 import Image from "next/image";
-import { dummyStudents } from "@/lib/data";
+import { dummyStudents  } from "@/lib/data";
 import {
   Table,
   TableBody,
@@ -13,11 +13,25 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { MdDelete } from "react-icons/md";
+import { useState } from "react";
 
 // Define the Student interface
 
 
 const StudentDetails = () => {
+  const [students, setStudents] = useState(dummyStudents);
+
+
+  const handleDelete = (id: number) => {
+
+    const studentToDelete = students.find((teacher) => teacher.id === id);
+    const confirmDelete = window.confirm(`Are you sure you want to delete ${studentToDelete?.name}?`);
+    if (confirmDelete) {
+      setStudents((prev) => prev.filter((student) => student.id !== id));
+      alert(`${studentToDelete?.name} deleted successfully.`);
+    }
+  };
+
   return (
     <div className="relative">
         <div className="flex justify-between">
@@ -28,7 +42,7 @@ const StudentDetails = () => {
                       <p className="text-white font-medium text-sm">Add Students</p>
               </button>
         </div>
-      <div className="rounded-2xl border border-gray-200 shadow-md overflow-hidden max-h-[700px]">
+      <div className="rounded-2xl border border-gray-200 shadow-md overflow-y-hidden">
         <Table className="w-full max-h-12">
           <TableHeader className="bg-orange-100">
             <TableRow>
@@ -41,8 +55,8 @@ const StudentDetails = () => {
             </TableRow>
           </TableHeader>
           <TableBody className="mt-2 bg-white">
-            {dummyStudents.length > 0 ? (
-              dummyStudents.map((student) => (
+            {students.length > 0 ? (
+              students.map((student) => (
                 <TableRow key={student.id} className="border-b">
                   <TableCell className="p-4">{student.reg_no}</TableCell>
                   <TableCell className="p-4">
@@ -92,7 +106,9 @@ const StudentDetails = () => {
                     <Button variant="outline" className="p-2">
                       <FaEdit className="text-gray-500" />
                     </Button>
-                    <Button variant="outline" className="p-2 ml-2">
+                    <Button variant="outline" className="p-2 ml-2"
+                      onClick={()=> handleDelete(student.id)}
+                      >
                       <MdDelete className="text-red-500" />
                     </Button>
                   </TableCell>
