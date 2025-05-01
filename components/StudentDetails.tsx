@@ -1,9 +1,11 @@
-'use client'
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { FaEdit } from "react-icons/fa";
-import Image from "next/image";
-import { dummyStudents  } from "@/lib/data";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { FaEdit } from 'react-icons/fa';
+import { MdDelete } from 'react-icons/md';
+import Image from 'next/image';
+import { dummyStudents } from '@/lib/data';
 import {
   Table,
   TableBody,
@@ -11,20 +13,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { MdDelete } from "react-icons/md";
-import { useState } from "react";
-
-// Define the Student interface
-
+} from '@/components/ui/table';
+import AddStudent from './AddStudent';
 
 const StudentDetails = () => {
   const [students, setStudents] = useState(dummyStudents);
-
+  const [showAddStudent, setShowAddStudent] = useState(false);
 
   const handleDelete = (id: number) => {
-
-    const studentToDelete = students.find((teacher) => teacher.id === id);
+    const studentToDelete = students.find((student) => student.id === id);
     const confirmDelete = window.confirm(`Are you sure you want to delete ${studentToDelete?.name}?`);
     if (confirmDelete) {
       setStudents((prev) => prev.filter((student) => student.id !== id));
@@ -32,16 +29,31 @@ const StudentDetails = () => {
     }
   };
 
+  const AddStudentPopup = () => (
+    <AddStudent 
+    onClose={() => setShowAddStudent(false)}
+    onSave={(studentData) => {
+      // Handle saving the student data
+      console.log('New student:', studentData);
+      setShowAddStudent(false);
+    }}
+  />
+  );
+
   return (
     <div className="relative">
-        <div className="flex justify-between">
-              <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+      <div className="flex justify-between">
+        <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+        <button
+         onClick={() => setShowAddStudent(true)}
+          className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center"
+        >
+          <p className="text-white font-medium text-sm">Add Students</p>
+        </button>
+      </div>
 
-              <button className="  rounded-lg px-2 py-1 mr-8 h-8 mt-4
-              bg-cyan-500 flex items-center justify-center">
-                      <p className="text-white font-medium text-sm">Add Students</p>
-              </button>
-        </div>
+      {showAddStudent && <AddStudentPopup />}
+
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-y-hidden">
         <Table className="w-full max-h-12">
           <TableHeader className="bg-orange-100">
@@ -65,9 +77,9 @@ const StudentDetails = () => {
                         <Image
                           src={student.profile_pic}
                           alt="student"
-                          width={40} 
-                          height={40} 
-                          className="object-cover" 
+                          width={40}
+                          height={40}
+                          className="object-cover"
                         />
                       </div>
                       <div>
@@ -80,12 +92,12 @@ const StudentDetails = () => {
                   <TableCell className="p-4">
                     <div className="flex items-center gap-2">
                       <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
-                        <Image 
+                        <Image
                           src={student.teacher_pic}
-                          alt='teacher'
-                          width={40} 
-                          height={40} 
-                          className="object-cover" 
+                          alt="teacher"
+                          width={40}
+                          height={40}
+                          className="object-cover"
                         />
                       </div>
                       <div>
@@ -95,10 +107,15 @@ const StudentDetails = () => {
                     </div>
                   </TableCell>
                   <TableCell className="p-4">
-                    <Button className={`px-3 py-1 rounded-md ${
-                      student.status === 'Joined' ? 'bg-green-300' : 
-                      student.status === 'Pending' ? 'bg-yellow-300' : 'bg-gray-300'
-                    } text-white`}>
+                    <Button
+                      className={`px-3 py-1 rounded-md ${
+                        student.status === 'Joined'
+                          ? 'bg-green-300'
+                          : student.status === 'Pending'
+                          ? 'bg-yellow-300'
+                          : 'bg-gray-300'
+                      } text-white`}
+                    >
                       {student.status}
                     </Button>
                   </TableCell>
@@ -106,9 +123,7 @@ const StudentDetails = () => {
                     <Button variant="outline" className="p-2">
                       <FaEdit className="text-gray-500" />
                     </Button>
-                    <Button variant="outline" className="p-2 ml-2"
-                      onClick={()=> handleDelete(student.id)}
-                      >
+                    <Button variant="outline" className="p-2 ml-2" onClick={() => handleDelete(student.id)}>
                       <MdDelete className="text-red-500" />
                     </Button>
                   </TableCell>
@@ -124,10 +139,8 @@ const StudentDetails = () => {
           </TableBody>
         </Table>
       </div>
-
-     
     </div>
-  )
-}
+  );
+};
 
 export default StudentDetails;

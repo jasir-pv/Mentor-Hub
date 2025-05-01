@@ -20,10 +20,10 @@ const TeacherDetails = () => {
   };
   
 
-  const handleEdit = (teacher: any) => {
-    alert(`Editing teacher: ${teacher.name}`);
-    // You can open a modal or navigate to an edit page here
-  };
+//   const handleEdit = (teacher: any) => {
+//     alert(`Editing teacher: ${teacher.name}`);
+//     // You can open a modal or navigate to an edit page here
+//   };
 
   return (
     <div>
@@ -93,7 +93,7 @@ const TeacherDetails = () => {
                     </Button>
                   </td>
                   <td className="p-4 text-right flex gap-2 justify-end">
-                    <Button variant="outline" className="p-2" onClick={() => handleEdit(teacher)}>
+                    <Button variant="outline" className="p-2" >
                       <FaEdit className="text-gray-500" />
                     </Button>
                     <Button variant="outline" className="p-2" onClick={() => handleDelete(teacher.id)}>
