@@ -19,7 +19,7 @@ type StudentData = {
   photo?: File | null;
 };
 
-const AddStudent = ({ onClose, onSave }: { onClose: () => void; onSave: (data: StudentData) => void }) => {
+const AddTeacher = ({ onClose, onSave }: { onClose: () => void; onSave: (data: StudentData) => void }) => {
   const [studentData, setStudentData] = useState<StudentData>({
     name: '',
     email: '',
@@ -77,7 +77,7 @@ const AddStudent = ({ onClose, onSave }: { onClose: () => void; onSave: (data: S
           <X size={24} />
         </button>
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Student</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Teacher</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center mb-6">
@@ -265,7 +265,7 @@ const AddStudent = ({ onClose, onSave }: { onClose: () => void; onSave: (data: S
               type="submit"
               className="bg-purple-600 hover:bg-purple-700 px-6 py-2 text-white"
             >
-              Add Student
+              Add Teacher
             </Button>
           </div>
         </form>
@@ -274,4 +274,4 @@ const AddStudent = ({ onClose, onSave }: { onClose: () => void; onSave: (data: S
   );
 };
 
-export default AddStudent;
+export default AddTeacher;

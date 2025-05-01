@@ -80,3 +80,24 @@ body {
   border: none;
   font-family: 'Inter', sans-serif;
 }
+
+
+/* Custom scrollbar for the popup only */
+.popup-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.popup-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.popup-scrollbar::-webkit-scrollbar-thumb {
+  background: #caa2f0;
+  border-radius: 10px;
+}
+
+.popup-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #bd83f3;
+}

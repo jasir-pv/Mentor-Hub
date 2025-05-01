@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Image from "next/image";
 import { dummyTeachers as initialData } from "@/lib/data";
+import AddTeacher from "./AddTeacher";
 
 const TeacherDetails = () => {
   const [teachers, setTeachers] = useState(initialData);
+  const [showAddStudent, setShowAddStudent] = useState(false);
 
   const handleDelete = (id: number) => {
     const teacherToDelete = teachers.find((teacher) => teacher.id === id);
@@ -25,14 +27,29 @@ const TeacherDetails = () => {
 //     // You can open a modal or navigate to an edit page here
 //   };
 
+const AddStudentPopup = () => (
+    <AddTeacher
+    onClose={() => setShowAddStudent(false)}
+    onSave={(studentData) => {
+      // Handle saving the student data
+      console.log('New student:', studentData);
+      setShowAddStudent(false);
+    }}
+  />
+  );
+
   return (
     <div>
       <div className="flex justify-between">
         <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
-        <button className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center">
+        <button
+          onClick={() => setShowAddStudent(true)}
+        className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center">
           <p className="text-white font-medium text-sm">Add Teachers</p>
         </button>
       </div>
+
+      {showAddStudent && <AddStudentPopup />}
 
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-x-auto overflow-y-hidden h-full">
         <table className="w-full max-h-12">
