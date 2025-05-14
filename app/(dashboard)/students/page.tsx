@@ -5,7 +5,7 @@ import React from 'react'
 const StudentPage = ( ) => {
   return (
     <div>
-      <StudentDetails />
+      <StudentDetails userRole='student'/>
     </div>
   )
 }

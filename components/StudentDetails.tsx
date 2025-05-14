@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/table';
 import AddStudent from './AddStudent';
 
-const StudentDetails = () => {
+const StudentDetails = ( {userRole} : {userRole: string}) => {
   const [students, setStudents] = useState(dummyStudents);
   const [showAddStudent, setShowAddStudent] = useState(false);
 
@@ -44,12 +44,16 @@ const StudentDetails = () => {
     <div className="relative">
       <div className="flex justify-between">
         <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+
+        {userRole === 'admin' && (
         <button
          onClick={() => setShowAddStudent(true)}
           className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center"
         >
           <p className="text-white font-medium text-sm">Add Students</p>
         </button>
+
+        )}
       </div>
 
       {showAddStudent && <AddStudentPopup />}
