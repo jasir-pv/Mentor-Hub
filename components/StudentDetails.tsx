@@ -136,7 +136,7 @@ const StudentDetails = ( {userRole} : {userRole: string}) => {
             ) : (
               <TableRow>
                 <TableCell colSpan={6} className="text-center p-4">
-                  No students found
+                  No students found 
                 </TableCell>
               </TableRow>
             )}

@@ -12,13 +12,13 @@ const TeacherDetails = () => {
   const [showAddStudent, setShowAddStudent] = useState(false);
 
   const handleDelete = (id: number) => {
-    const teacherToDelete = teachers.find((teacher) => teacher.id === id);
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${teacherToDelete?.name}?`);
+    // const teacherToDelete = teachers.find((teacher) => teacher.id === id);
+    // const confirmDelete = window.confirm(`Are you sure you want to delete ${teacherToDelete?.name}?`);
   
-    if (confirmDelete) {
-      setTeachers((prev) => prev.filter((teacher) => teacher.id !== id));
-      alert(`Teacher ${teacherToDelete?.name} deleted successfully.`);
-    }
+    // if (confirmDelete) {
+    //   setTeachers((prev) => prev.filter((teacher) => teacher.id !== id));
+    //   alert(`Teacher ${teacherToDelete?.name} deleted successfully.`);
+    // }
   };
   
 
