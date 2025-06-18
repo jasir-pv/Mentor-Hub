@@ -15,10 +15,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import AddStudent from './AddStudent';
+import { useRouter } from 'next/navigation';
 
 const StudentDetails = ( {userRole} : {userRole: string}) => {
   const [students, setStudents] = useState(dummyStudents);
   const [showAddStudent, setShowAddStudent] = useState(false);
+
+  const router = useRouter();
 
   const handleDelete = (id: number) => {
     const studentToDelete = students.find((student) => student.id === id);
@@ -28,6 +31,10 @@ const StudentDetails = ( {userRole} : {userRole: string}) => {
       alert(`${studentToDelete?.name} deleted successfully.`);
     }
   };
+
+  const handleEdit = () => {
+    router.push(`/students/${student.id}`)
+  }
 
   const AddStudentPopup = () => (
     <AddStudent 
@@ -124,7 +131,7 @@ const StudentDetails = ( {userRole} : {userRole: string}) => {
                     </Button>
                   </TableCell>
                   <TableCell className="p-4 text-right ">
-                    <Button variant="outline" className="p-2">
+                    <Button variant="outline" className="p-2" onClick={handleEdit}>
                       <FaEdit className="text-gray-500" />
                     </Button>
                     <Button variant="outline" className="p-2 ml-2" onClick={() => handleDelete(student.id)}>

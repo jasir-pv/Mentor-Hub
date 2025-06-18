@@ -6,12 +6,17 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Image from "next/image";
 import { dummyTeachers as initialData } from "@/lib/data";
 import AddTeacher from "./AddTeacher";
+import { useRouter } from "next/navigation";
 
-const TeacherDetails = () => {
+const TeacherDetails = ( {userRole} : {userRole: string} ) => {
   const [teachers, setTeachers] = useState(initialData);
   const [showAddStudent, setShowAddStudent] = useState(false);
 
+  const router = useRouter( );
+
   const handleDelete = (id: number) => {
+
+
     // const teacherToDelete = teachers.find((teacher) => teacher.id === id);
     // const confirmDelete = window.confirm(`Are you sure you want to delete ${teacherToDelete?.name}?`);
   
@@ -22,10 +27,9 @@ const TeacherDetails = () => {
   };
   
 
-//   const handleEdit = (teacher: any) => {
-//     alert(`Editing teacher: ${teacher.name}`);
-//     // You can open a modal or navigate to an edit page here
-//   };
+  const handleEdit = () => {
+   router.push(`teachers/${teacher.id}`)
+  };
 
 const AddStudentPopup = () => (
     <AddTeacher
@@ -42,11 +46,18 @@ const AddStudentPopup = () => (
     <div>
       <div className="flex justify-between">
         <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+      
+      {/*Checking admin or or user  */}
+      {userRole === 'admin' && (
         <button
           onClick={() => setShowAddStudent(true)}
         className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center">
           <p className="text-white font-medium text-sm">Add Teachers</p>
         </button>
+       
+       )}
+
+
       </div>
 
       {showAddStudent && <AddStudentPopup />}
