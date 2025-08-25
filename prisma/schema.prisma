@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
+  output   = "../lib/prisma"
 }
 
 datasource db {
@@ -19,14 +19,14 @@ model Student {
   pincode          String
   address          String
   createdAt        DateTime @default(now())
-  class_name       String
+  class_name       String?
   profile_pic      String?
-  reg_no           String   @unique
+  reg_no           String?   @unique
   status           String   @default("Pending")
-  teacherId        Int
+  teacherId        Int?
   updatedAt        DateTime @updatedAt
   id               Int      @id @default(autoincrement())
-  teacher          Teacher  @relation(fields: [teacherId], references: [id])
+  teacher          Teacher?  @relation(fields: [teacherId], references: [id])
 }
 
 model Teacher {

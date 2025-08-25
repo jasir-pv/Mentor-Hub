@@ -44,14 +44,19 @@ export async function PUT(
         name: body.name,
         email: body.email,
         phone: body.phone,
+        class_name: body.class_name,
+        reg_no: body.reg_no,
         whatsapp: body.whatsapp,
         parentName: body.parentName,
         parentOccupation: body.parentOccupation,
         place: body.place,
         pincode: body.pincode,
         address: body.address,
-        profile_pic: body.profile_pic || "/student-avt.jpg",
-        teacherId: body.teacherId || null, // if FK relation
+        profile_pic: body.profile_pic || '/student-avt.jpg',
+        teacherId: body.teacherId
+              ? Number(body.teacherId)   // if a teacher selected
+              : undefined, 
+        status: body.status,// if FK relation
       },
     });
     return NextResponse.json(student, { status: 200 });

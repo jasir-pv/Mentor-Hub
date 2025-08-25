@@ -29,8 +29,8 @@ export async function POST(req: Request) {
         name: body.name,
         email: body.email,
         phone: body.phone,
-        class_name: body.class_name,   // ✅ required
-        reg_no: body.reg_no,           // ✅ required
+        class_name: body.class_name,  
+        reg_no: body.reg_no,           
         whatsapp: body.whatsapp,
         parentName: body.parentName,
         parentOccupation: body.parentOccupation,

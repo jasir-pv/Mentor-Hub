@@ -1,7 +1,7 @@
 // components/students/StudentForm.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { FiUpload } from 'react-icons/fi';
@@ -14,6 +14,7 @@ export type StudentData = {
   name: string;
   email: string;
   phone: string;
+  class_name: string; 
   whatsapp?: string;
   parentName: string;
   parentOccupation?: string;
@@ -38,12 +39,15 @@ const AddStudent: React.FC<StudentFormProps> = ({
   isModal = false,
   onSave,
 }) => {
+
+  const [teachers, setTeachers] = useState<{ id: number; name: string }[]>([]);
   const [studentData, setStudentData] = useState<StudentData>(
     initialData || {
       reg_no: '',
       name: '',
       email: '',
       phone: '',
+      class_name: '', 
       whatsapp: '',
       parentName: '',
       parentOccupation: '',
@@ -56,6 +60,7 @@ const AddStudent: React.FC<StudentFormProps> = ({
     }
   );
 
+
   const [previewImage, setPreviewImage] = useState<string | null>(
     initialData?.profile_pic || null
   );
@@ -64,12 +69,34 @@ const AddStudent: React.FC<StudentFormProps> = ({
   const router = useRouter();
   const isEditMode = Boolean(initialData);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setStudentData((prev) => ({ ...prev, [name]: value }));
-  };
+
+    // 🔹 Fetch teachers from API
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const res = await fetch('/api/teachers');
+        if (res.ok) {
+          const data = await res.json();
+          setTeachers(data);
+        }
+      } catch (err) {
+        console.error('Error fetching teachers:', err);
+      }
+    };
+    fetchTeachers();
+  }, []);
+
+      const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+      ) => {
+        const { name, value } = e.target;
+
+        setStudentData((prev) => ({
+          ...prev,
+          [name]: name === 'teacherId' ? (value ? parseInt(value) : null) : value,
+        }));
+      };
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -199,6 +226,7 @@ const AddStudent: React.FC<StudentFormProps> = ({
               { label: 'Name*', name: 'name', type: 'text', required: true },
               { label: 'Email*', name: 'email', type: 'email', required: true },
               { label: 'Phone*', name: 'phone', type: 'tel', required: true },
+              { label: 'Class Name*', name: 'class_name', type: 'text', required: true },
               { label: 'Whatsapp', name: 'whatsapp', type: 'tel' },
               {
                 label: 'Parent Name*',
@@ -218,12 +246,7 @@ const AddStudent: React.FC<StudentFormProps> = ({
                 type: 'text',
                 required: true,
               },
-              {
-                label: 'Teacher',
-                name: 'teacher',
-                type: 'text',
-                required: false,
-              },
+             
             ].map(({ label, name, type, required }) => (
               <div key={name}>
                 <label className="block text-sm font-medium mb-1">
@@ -239,6 +262,23 @@ const AddStudent: React.FC<StudentFormProps> = ({
                 />
               </div>
             ))}
+
+             <div>
+            <label className="block text-sm font-medium mb-1">Teacher</label>
+            <select
+              name="teacherId" // use teacherId not teacher
+              value={(studentData as any).teacherId || ''}
+              onChange={handleInputChange}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="">-- Select Teacher --</option>
+              {teachers.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
             {/* Address */}
             <div className="md:col-span-2">
@@ -270,7 +310,7 @@ const AddStudent: React.FC<StudentFormProps> = ({
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 mt-4">
             <Button
               type="button"
               variant="outline"
