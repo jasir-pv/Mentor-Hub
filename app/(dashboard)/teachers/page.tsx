@@ -1,13 +1,29 @@
-import TeacherDetails from '@/components/TeachersDetails'
-import React from 'react'
+// app/teachers/page.tsx
+'use client';
+
+import AddTeacher from '@/components/AddTeacher';
+import TeacherDetails from '@/components/TeachersDetails';
+import { useState } from 'react';
 
 
-const TeacherPage = ( ) => {
+const TeachersPage = () => {
+  const [showAddModal, setShowAddModal] = useState(false);
+
   return (
-    <div>
-      <TeacherDetails userRole='admin'/>
+    <div className="container mx-auto p-2">
+      <TeacherDetails
+        userRole='admin' 
+        onAddTeacher={() => setShowAddModal(true)} 
+      />
+      
+      {showAddModal && (
+        <AddTeacher 
+          onClose={() => setShowAddModal(false)}
+          isModal={true}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default TeacherPage
+export default TeachersPage;

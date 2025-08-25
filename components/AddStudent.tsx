@@ -1,292 +1,285 @@
+// components/teachers/TeacherForm.tsx
+'use client';
+
 import React, { useState } from 'react';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { FiUpload } from 'react-icons/fi';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-type StudentData = {
+type TeacherData = {
+  emp_id: string;
   name: string;
   email: string;
   phone: string;
-  whatsapp: string;
-  parentName: string;
-  parentOccupation: string;
-  place: string;
-  pincode: string;
-  address: string;
-  teacher: string;
-  enrollmentType: 'package' | 'repackage';
-  photo?: File | null;
+  department: string;
+  subjects: string[];
+  classes_handled: string[];
+  status: 'Active' | 'On Leave' | 'Inactive';
+  profile_pic?: string;
 };
 
-const AddStudent = ({ onClose, onSave }: { onClose: () => void; onSave: (data: StudentData) => void }) => {
-  const [studentData, setStudentData] = useState<StudentData>({
-    name: '',
-    email: '',
-    phone: '',
-    whatsapp: '',
-    parentName: '',
-    parentOccupation: '',
-    place: '',
-    pincode: '',
-    address: '',
-    teacher: '',
-    enrollmentType: 'package',
-    photo: null
-  });
+interface TeacherFormProps {
+  initialData?: TeacherData;
+  onClose?: () => void;
+  isModal?: boolean;
+}
 
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+const AddStudent: React.FC<TeacherFormProps> = ({ 
+  initialData, 
+  onClose, 
+  isModal = false 
+}) => {
+  const [teacherData, setTeacherData] = useState<TeacherData>(
+    initialData || {
+      emp_id: '',
+      name: '',
+      email: '',
+      phone: '',
+      department: '',
+      subjects: [],
+      classes_handled: [],
+      status: 'Active',
+      profile_pic: '',
+    }
+  );
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [subjectsInput, setSubjectsInput] = useState('');
+  const [classesInput, setClassesInput] = useState('');
+  const [previewImage, setPreviewImage] = useState<string | null>(initialData?.profile_pic || null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const router = useRouter();
+  const isEditMode = Boolean(initialData);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setStudentData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setTeacherData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setStudentData(prev => ({
-        ...prev,
-        photo: file
-      }));
 
-      // Create preview
+      // Preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
+        const result = reader.result as string;
+        setPreviewImage(result);
+        setTeacherData(prev => ({ ...prev, profile_pic: result }));
       };
       reader.readAsDataURL(file);
     }
   };
 
- // Update the handleSubmit function in AddStudent.tsx
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  
-  try {
-    const response = await fetch('/api/students', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(studentData),
-    });
-    
-    if (response.ok) {
-      const newStudent = await response.json();
-      onSave(newStudent);
-    } else {
-      console.error('Failed to create student');
-      alert('Failed to create student');
+  const addSubject = () => {
+    if (subjectsInput.trim()) {
+      setTeacherData(prev => ({
+        ...prev,
+        subjects: [...prev.subjects, subjectsInput.trim()]
+      }));
+      setSubjectsInput('');
     }
-  } catch (error) {
-    console.error('Error creating student:', error);
-    alert('Error creating student');
-  }
-};
+  };
+
+  const removeSubject = (index: number) => {
+    setTeacherData(prev => ({
+      ...prev,
+      subjects: prev.subjects.filter((_, i) => i !== index)
+    }));
+  };
+
+  const addClass = () => {
+    if (classesInput.trim()) {
+      setTeacherData(prev => ({
+        ...prev,
+        classes_handled: [...prev.classes_handled, classesInput.trim()]
+      }));
+      setClassesInput('');
+    }
+  };
+
+  const removeClass = (index: number) => {
+    setTeacherData(prev => ({
+      ...prev,
+      classes_handled: prev.classes_handled.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const url = isEditMode ? `/api/teachers/${initialData?.emp_id}` : '/api/teachers';
+      const method = isEditMode ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(teacherData),
+      });
+
+      if (response.ok) {
+        alert(isEditMode ? "Teacher updated successfully!" : "Teacher added successfully!");
+        
+        if (isModal && onClose) {
+          onClose();
+        } else {
+          router.push('/teachers');
+          router.refresh();
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`Failed: ${errorData.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCancel = () => {
+    if (isModal && onClose) {
+      onClose();
+    } else {
+      router.back();
+    }
+  };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-4">
-      <div className="bg-white w-full max-w-4xl rounded-[40px] p-6 overflow-y-auto max-h-[90vh] relative popup-scrollbar">
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
-        >
-          <X size={24} />
-        </button>
+    <div className={isModal ? "fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-4" : "p-6"}>
+      <div className={`bg-white w-full max-w-4xl rounded-[40px] p-6 overflow-y-auto max-h-[90vh] relative ${isModal ? '' : 'border border-gray-200 shadow-md'}`}>
+        {isModal && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10"
+          >
+            <X size={24} />
+          </button>
+        )}
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Student</h2>
+        <h2 className="text-2xl font-bold mb-6">{isEditMode ? "Edit Teacher" : "Add New Teacher"}</h2>
 
         <form onSubmit={handleSubmit}>
+          {/* Profile Upload */}
           <div className="flex flex-col items-center mb-6">
             <div className="relative">
               <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
                 {previewImage ? (
-                  <Image 
-                    src={previewImage} 
-                    alt="Preview" 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="text-gray-400 text-4xl">📷</div>
-                )}
+                  <Image src={previewImage} alt="Preview" width={128} height={128} className="object-cover" />
+                ) : <div className="text-gray-400 text-4xl">📷</div>}
               </div>
-              <label className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md text-sm font-medium text-purple-600 border border-purple-100 cursor-pointer hover:bg-purple-50 transition-colors flex items-center">
-                <FiUpload className="mr-1" size={14} />
+              <label className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md text-purple-600 cursor-pointer flex items-center gap-1">
+                <FiUpload size={14} />
                 Upload
-                <input 
-                  type="file" 
-                  className="hidden" 
-                  accept="image/jpeg,image/png"
-                  onChange={handleFileChange}
-                />
+                <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
               </label>
             </div>
-            <p className="mt-6 text-sm text-gray-500 text-center">
-              JPEG, PNG up to 5MB (1000px recommended)
-            </p>
           </div>
 
-          <div className="flex justify-center gap-6 mb-8">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input 
-                type="radio" 
-                name="enrollmentType"
-                checked={studentData.enrollmentType === 'package'}
-                onChange={() => setStudentData(prev => ({...prev, enrollmentType: 'package'}))}
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500"
-              />
-              <span className="text-gray-700">Package</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input 
-                type="radio" 
-                name="enrollmentType"
-                checked={studentData.enrollmentType === 'repackage'}
-                onChange={() => setStudentData(prev => ({...prev, enrollmentType: 'repackage'}))}
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500"
-              />
-              <span className="text-gray-700">Repackage</span>
-            </label>
-          </div>
-
+          {/* Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {[
+              { label: 'Employee ID*', name: 'emp_id', type: 'text', required: true },
+              { label: 'Name*', name: 'name', type: 'text', required: true },
+              { label: 'Email*', name: 'email', type: 'email', required: true },
+              { label: 'Phone*', name: 'phone', type: 'tel', required: true },
+              { label: 'Department*', name: 'department', type: 'text', required: true },
+            ].map(({ label, name, type, required }) => (
+              <div key={name}>
+                <label className="block text-sm font-medium mb-1">{label}</label>
+                <input
+                  type={type}
+                  name={name}
+                  value={(teacherData as any)[name] || ''}
+                  onChange={handleInputChange}
+                  required={required}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+            ))}
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name*</label>
-              <input
-                type="text"
-                name="name"
-                value={studentData.name}
+              <label className="block text-sm font-medium mb-1">Status*</label>
+              <select
+                name="status"
+                value={teacherData.status}
                 onChange={handleInputChange}
                 required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Full name"
-              />
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="Active">Active</option>
+                <option value="On Leave">On Leave</option>
+                <option value="Inactive">Inactive</option>
+              </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
-              <input
-                type="email"
-                name="email"
-                value={studentData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone No.*</label>
-              <input
-                type="tel"
-                name="phone"
-                value={studentData.phone}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Phone number"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Whatsapp No.</label>
-              <input
-                type="tel"
-                name="whatsapp"
-                value={studentData.whatsapp}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Whatsapp number"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Parent Name*</label>
-              <input
-                type="text"
-                name="parentName"
-                value={studentData.parentName}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Parent's name"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Parent Occupation</label>
-              <input
-                type="text"
-                name="parentOccupation"
-                value={studentData.parentOccupation}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Parent's occupation"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Place*</label>
-              <input
-                type="text"
-                name="place"
-                value={studentData.place}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="City/Town"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Pincode*</label>
-              <input
-                type="text"
-                name="pincode"
-                value={studentData.pincode}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Postal code"
-              />
-            </div>
+
+            {/* Subjects */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Address*</label>
-              <input
-                type="text"
-                name="address"
-                value={studentData.address}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Full address"
-              />
+              <label className="block text-sm font-medium mb-1">Subjects</label>
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={subjectsInput}
+                  onChange={e => setSubjectsInput(e.target.value)}
+                  placeholder="Add subject"
+                  className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                  onKeyPress={e => { if (e.key === 'Enter') { e.preventDefault(); addSubject(); } }}
+                />
+                <Button type="button" onClick={addSubject} className="bg-purple-600 hover:bg-purple-700 text-white">Add</Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {teacherData.subjects.map((s, i) => (
+                  <span key={i} className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                    {s} <button type="button" onClick={() => removeSubject(i)} className="ml-1">×</button>
+                  </span>
+                ))}
+              </div>
             </div>
+
+            {/* Classes Handled */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Assigned Teacher</label>
-              <input
-                type="text"
-                name="teacher"
-                value={studentData.teacher}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Teacher's name"
-              />
+              <label className="block text-sm font-medium mb-1">Classes Handled</label>
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={classesInput}
+                  onChange={e => setClassesInput(e.target.value)}
+                  placeholder="Add class"
+                  className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                  onKeyPress={e => { if (e.key === 'Enter') { e.preventDefault(); addClass(); } }}
+                />
+                <Button type="button" onClick={addClass} className="bg-purple-600 hover:bg-purple-700 text-white">Add</Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {teacherData.classes_handled.map((c, i) => (
+                  <span key={i} className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                    {c} <button type="button" onClick={() => removeClass(i)} className="ml-1">×</button>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
           <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleCancel}
+              disabled={isSubmitting}
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              className="bg-purple-600 hover:bg-purple-700 px-6 py-2 text-white"
+            <Button 
+              type="submit" 
+              className="bg-purple-600 hover:bg-purple-700 text-white"
+              disabled={isSubmitting}
             >
-              Add Student
+              {isSubmitting ? 'Processing...' : isEditMode ? 'Update Teacher' : 'Add Teacher'}
             </Button>
           </div>
         </form>

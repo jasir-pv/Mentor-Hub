@@ -7,8 +7,14 @@ import Image from "next/image";
 import AddTeacher from "./AddTeacher";
 import { useRouter } from "next/navigation";
 
-const TeacherDetails = ({ userRole }: { userRole: string }) => {
-  const [teachers, setTeachers] = useState<any[]>([]);
+
+interface TeacherListProps {
+  userRole: string;
+  onAddTeacher: () => void;
+}
+
+const TeacherDetails: React.FC<TeacherListProps> = ({ userRole, onAddTeacher }) => {  const [teachers, setTeachers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAddTeacher, setShowAddTeacher] = useState(false);
 
   const router = useRouter();
@@ -27,6 +33,8 @@ const TeacherDetails = ({ userRole }: { userRole: string }) => {
       } catch (error) {
         console.error("Failed to fetch teachers:", error);
         alert("Failed to load teachers from database.");
+      }finally {
+        setLoading(false);
       }
     };
 
@@ -64,15 +72,15 @@ const TeacherDetails = ({ userRole }: { userRole: string }) => {
     router.push(`/teachers/${id}`);
   };
 
-  const AddTeacherPopup = () => (
-    <AddTeacher
-      onClose={() => setShowAddTeacher(false)}
-      onSave={(teacherData) => {
-        console.log("New teacher:", teacherData);
-        setShowAddTeacher(false);
-      }}
-    />
-  );
+
+
+   if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -81,16 +89,15 @@ const TeacherDetails = ({ userRole }: { userRole: string }) => {
 
         {/* Show Add button only if Admin */}
         {userRole === "admin" && (
-          <button
-            onClick={() => setShowAddTeacher(true)}
-            className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center"
+          <Button
+            onClick={onAddTeacher}
+            className="bg-cyan-500 hover:bg-cyan-600"
           >
-            <p className="text-white font-medium text-sm">Add Teachers</p>
-          </button>
+            Add Teachers
+          </Button>
         )}
       </div>
 
-      {showAddTeacher && <AddTeacherPopup />}
 
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-x-auto overflow-y-hidden h-full">
         <table className="w-full max-h-12">
