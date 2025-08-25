@@ -62,10 +62,31 @@ const AddStudent = ({ onClose, onSave }: { onClose: () => void; onSave: (data: S
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave(studentData);
-  };
+ // Update the handleSubmit function in AddStudent.tsx
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  try {
+    const response = await fetch('/api/students', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(studentData),
+    });
+    
+    if (response.ok) {
+      const newStudent = await response.json();
+      onSave(newStudent);
+    } else {
+      console.error('Failed to create student');
+      alert('Failed to create student');
+    }
+  } catch (error) {
+    console.error('Error creating student:', error);
+    alert('Error creating student');
+  }
+};
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-4">

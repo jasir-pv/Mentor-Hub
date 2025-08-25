@@ -5,7 +5,7 @@ import React from 'react'
 const TeacherPage = ( ) => {
   return (
     <div>
-      <TeacherDetails />
+      <TeacherDetails userRole='admin'/>
     </div>
   )
 }

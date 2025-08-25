@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
@@ -18,23 +18,45 @@ import AddStudent from './AddStudent';
 import { useRouter } from 'next/navigation';
 
 const StudentDetails = ( {userRole} : {userRole: string}) => {
-  const [students, setStudents] = useState(dummyStudents);
+  const [students, setStudents] =  useState<any[]>([]);;
   const [showAddStudent, setShowAddStudent] = useState(false);
 
   const router = useRouter();
 
-  const handleDelete = (id: number) => {
-    const studentToDelete = students.find((student) => student.id === id);
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${studentToDelete?.name}?`);
-    if (confirmDelete) {
-      setStudents((prev) => prev.filter((student) => student.id !== id));
-      alert(`${studentToDelete?.name} deleted successfully.`);
-    }
-  };
+    useEffect(() => {
+    fetch("/api/students")
+      .then((res) => res.json())
+      .then((data) => setStudents(data));
+  }, []);
 
-  const handleEdit = () => {
-    router.push(`/students/${student.id}`)
+const handleDelete = async (id: number) => {
+  const studentToDelete = students.find((student) => student.id === id);
+  const confirmDelete = window.confirm(`Are you sure you want to delete ${studentToDelete?.name}?`);
+  
+  if (confirmDelete) {
+    try {
+      const response = await fetch(`/api/students/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        setStudents((prev) => prev.filter((student) => student.id !== id));
+        alert(`${studentToDelete?.name} deleted successfully.`);
+      } else {
+        alert('Failed to delete student');
+      }
+    } catch (error) {
+      console.error('Error deleting student:', error);
+      alert('Error deleting student');
+    }
   }
+};
+
+const handleEdit = (id: number) => {
+  router.push(`/students/${id}`); // go to edit page
+};
+
+
 
   const AddStudentPopup = () => (
     <AddStudent 
@@ -50,7 +72,7 @@ const StudentDetails = ( {userRole} : {userRole: string}) => {
   return (
     <div className="relative">
       <div className="flex justify-between">
-        <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
+        <h2 className="mt-4 mb-3 text-xl font-semibold">Student Details</h2>
 
         {userRole === 'admin' && (
         <button
@@ -61,9 +83,9 @@ const StudentDetails = ( {userRole} : {userRole: string}) => {
         </button>
 
         )}
+      {showAddStudent && <AddStudentPopup />}
       </div>
 
-      {showAddStudent && <AddStudentPopup />}
 
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-y-hidden">
         <Table className="w-full max-h-12">
@@ -131,7 +153,7 @@ const StudentDetails = ( {userRole} : {userRole: string}) => {
                     </Button>
                   </TableCell>
                   <TableCell className="p-4 text-right ">
-                    <Button variant="outline" className="p-2" onClick={handleEdit}>
+                    <Button variant="outline" className="p-2" onClick={()=> handleEdit(student.id)}>
                       <FaEdit className="text-gray-500" />
                     </Button>
                     <Button variant="outline" className="p-2 ml-2" onClick={() => handleDelete(student.id)}>

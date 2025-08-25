@@ -1,66 +1,96 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Image from "next/image";
-import { dummyTeachers as initialData } from "@/lib/data";
 import AddTeacher from "./AddTeacher";
 import { useRouter } from "next/navigation";
 
-const TeacherDetails = ( {userRole} : {userRole: string} ) => {
-  const [teachers, setTeachers] = useState(initialData);
-  const [showAddStudent, setShowAddStudent] = useState(false);
+const TeacherDetails = ({ userRole }: { userRole: string }) => {
+  const [teachers, setTeachers] = useState<any[]>([]);
+  const [showAddTeacher, setShowAddTeacher] = useState(false);
 
-  const router = useRouter( );
-
-  const handleDelete = (id: number) => {
+  const router = useRouter();
 
 
-    // const teacherToDelete = teachers.find((teacher) => teacher.id === id);
-    // const confirmDelete = window.confirm(`Are you sure you want to delete ${teacherToDelete?.name}?`);
-  
-    // if (confirmDelete) {
-    //   setTeachers((prev) => prev.filter((teacher) => teacher.id !== id));
-    //   alert(`Teacher ${teacherToDelete?.name} deleted successfully.`);
-    // }
+  // ✅ Fetch teachers directly from DB (API route using Prisma)
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await fetch("/api/teachers");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setTeachers(data);
+      } catch (error) {
+        console.error("Failed to fetch teachers:", error);
+        alert("Failed to load teachers from database.");
+      }
+    };
+
+    fetchTeachers();
+  }, []);
+
+  // ✅ Delete teacher
+  const handleDelete = async (id: number) => {
+    const teacherToDelete = teachers.find((teacher) => teacher.id === id);
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${teacherToDelete?.name}?`
+    );
+
+    if (confirmDelete) {
+      try {
+        const response = await fetch(`/api/teachers/${id}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          setTeachers((prev) => prev.filter((teacher) => teacher.id !== id));
+          alert(`Teacher ${teacherToDelete?.name} deleted successfully.`);
+        } else {
+          alert("Failed to delete teacher");
+        }
+      } catch (error) {
+        console.error("Error deleting teacher:", error);
+        alert("Error deleting teacher");
+      }
+    }
   };
-  
 
-  const handleEdit = () => {
-   router.push(`teachers/${teacher.id}`)
+  // ✅ Edit teacher
+  const handleEdit = (id: number) => {
+    router.push(`/teachers/${id}`);
   };
 
-const AddStudentPopup = () => (
+  const AddTeacherPopup = () => (
     <AddTeacher
-    onClose={() => setShowAddStudent(false)}
-    onSave={(studentData) => {
-      // Handle saving the student data
-      console.log('New student:', studentData);
-      setShowAddStudent(false);
-    }}
-  />
+      onClose={() => setShowAddTeacher(false)}
+      onSave={(teacherData) => {
+        console.log("New teacher:", teacherData);
+        setShowAddTeacher(false);
+      }}
+    />
   );
 
   return (
     <div>
       <div className="flex justify-between">
         <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
-      
-      {/*Checking admin or or user  */}
-      {userRole === 'admin' && (
-        <button
-          onClick={() => setShowAddStudent(true)}
-        className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center">
-          <p className="text-white font-medium text-sm">Add Teachers</p>
-        </button>
-       
-       )}
 
-
+        {/* Show Add button only if Admin */}
+        {userRole === "admin" && (
+          <button
+            onClick={() => setShowAddTeacher(true)}
+            className="rounded-lg px-2 py-1 mr-8 h-8 mt-4 bg-cyan-500 flex items-center justify-center"
+          >
+            <p className="text-white font-medium text-sm">Add Teachers</p>
+          </button>
+        )}
       </div>
 
-      {showAddStudent && <AddStudentPopup />}
+      {showAddTeacher && <AddTeacherPopup />}
 
       <div className="rounded-2xl border border-gray-200 shadow-md overflow-x-auto overflow-y-hidden h-full">
         <table className="w-full max-h-12">
@@ -84,7 +114,7 @@ const AddStudentPopup = () => (
                     <div className="flex items-center gap-2">
                       <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
                         <Image
-                          src={teacher.profile_pic}
+                          src={teacher.profile_pic || "/default-avatar.png"}
                           alt="teacher"
                           width={40}
                           height={40}
@@ -100,31 +130,48 @@ const AddStudentPopup = () => (
                   <td className="p-4 text-sm">{teacher.department}</td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                      {teacher.subjects.map((subject, index) => (
-                        <span key={index} className="text-xs">{subject}</span>
+                      {teacher.subjects?.map((subject: string, index: number) => (
+                        <span key={index} className="text-xs">
+                          {subject}
+                        </span>
                       ))}
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                      {teacher.classes_handled.map((cls, index) => (
-                        <span key={index} className="text-xs">{cls}</span>
+                      {teacher.classes_handled?.map((cls: string, index: number) => (
+                        <span key={index} className="text-xs">
+                          {cls}
+                        </span>
                       ))}
                     </div>
                   </td>
                   <td className="p-4">
-                    <Button className={`px-2 py-0 text-[12px] rounded-md ${
-                      teacher.status === 'Active' ? 'bg-green-500' :
-                      teacher.status === 'On Leave' ? 'bg-yellow-500' : 'bg-gray-500'
-                    } text-white`}>
+                    <Button
+                      className={`px-2 py-0 text-[12px] rounded-md ${
+                        teacher.status === "Active"
+                          ? "bg-green-500"
+                          : teacher.status === "On Leave"
+                          ? "bg-yellow-500"
+                          : "bg-gray-500"
+                      } text-white`}
+                    >
                       {teacher.status}
                     </Button>
                   </td>
                   <td className="p-4 text-right flex gap-2 justify-end">
-                    <Button variant="outline" className="p-2" >
+                    <Button
+                      variant="outline"
+                      className="p-2"
+                      onClick={() => handleEdit(teacher.id)}
+                    >
                       <FaEdit className="text-gray-500" />
                     </Button>
-                    <Button variant="outline" className="p-2" onClick={() => handleDelete(teacher.id)}>
+                    <Button
+                      variant="outline"
+                      className="p-2"
+                      onClick={() => handleDelete(teacher.id)}
+                    >
                       <FaTrash className="text-red-500" />
                     </Button>
                   </td>
@@ -132,7 +179,9 @@ const AddStudentPopup = () => (
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="text-center p-4">No teachers found</td>
+                <td colSpan={7} className="text-center p-4">
+                  No teachers found
+                </td>
               </tr>
             )}
           </tbody>
