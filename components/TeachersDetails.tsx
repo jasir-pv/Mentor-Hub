@@ -84,7 +84,7 @@ const TeacherDetails: React.FC<TeacherListProps> = ({ userRole, onAddTeacher }) 
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h2 className="mt-4 mb-3 text-xl font-semibold">Teacher Details</h2>
 
         {/* Show Add button only if Admin */}

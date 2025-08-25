@@ -1,13 +1,28 @@
-import StudentDetails from '@/components/StudentDetails'
-import React from 'react'
+// app/students/page.tsx
+'use client';
 
+import { useState } from 'react';
+import StudentDetails from '@/components/StudentDetails';
+import AddStudent from '@/components/AddStudent';
 
-const StudentPage = ( ) => {
+const StudentsPage = () => {
+  const [showAddModal, setShowAddModal] = useState(false);
+
   return (
-    <div>
-      <StudentDetails userRole='admin'/>
-    </div>
-  )
-}
+    <div className="container mx-auto p-2">
+      <StudentDetails 
+        userRole="admin" 
+        onAddStudent={() => setShowAddModal(true)} 
+      />
 
-export default StudentPage
+      {showAddModal && (
+        <AddStudent 
+          onClose={() => setShowAddModal(false)} 
+          isModal={true} 
+        />
+      )}
+    </div>
+  );
+};
+
+export default StudentsPage;
