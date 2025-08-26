@@ -133,7 +133,7 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ userRole, onAddStudent 
                     <div className="flex items-center gap-2">
                       <div className="rounded-full w-10 h-10 bg-slate-200 overflow-hidden">
                         <Image
-                          src={student.teacher_pic || "/default-avatar.png"}
+                          src={student.teacher.profile_pic || "/default-avatar.png"}
                           alt="teacher"
                           width={40}
                           height={40}
@@ -141,8 +141,8 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ userRole, onAddStudent 
                         />
                       </div>
                       <div>
-                        <p className="font-medium text-sm">{student.teacher_name}</p>
-                        <p className="text-xs text-gray-500">{student.teacher_email}</p>
+                        <p className="font-medium text-sm">{student.teacher.name}</p>
+                        <p className="text-xs text-gray-500">{student.teacher.email}</p>
                       </div>
                     </div>
                   </td>

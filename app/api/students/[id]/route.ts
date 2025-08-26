@@ -1,45 +1,38 @@
+// app/api/students/[id]/route.ts
 'use server';
 
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-// 🔹 Get single student
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
+  const id = parseInt(params.id, 10);
   try {
     const student = await prisma.student.findUnique({
-      where: { id: Number(params.id) },
-      include: { teacher: true }, // if you have relation
+      where: { id },
+      include: { teacher: true },
     });
-
     if (!student) {
-      return NextResponse.json(
-        { error: "Student not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
-
-    return NextResponse.json(student, { status: 200 });
+    return NextResponse.json(student);
   } catch (error: any) {
-    console.error("Error fetching student:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch student", message: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// 🔹 Update student
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
 ) {
+  const id = parseInt(params.id, 10);
+  const body = await req.json();
+
   try {
-    const body = await req.json();
-    const student = await prisma.student.update({
-      where: { id: Number(params.id) },
+    const updatedStudent = await prisma.student.update({
+      where: { id },
       data: {
         name: body.name,
         email: body.email,
@@ -53,40 +46,33 @@ export async function PUT(
         pincode: body.pincode,
         address: body.address,
         profile_pic: body.profile_pic || '/student-avt.jpg',
-        teacherId: body.teacherId
-              ? Number(body.teacherId)   // if a teacher selected
-              : undefined, 
-        status: body.status,// if FK relation
+        teacherId: body.teacherId ? Number(body.teacherId) : undefined, // ✅ optional teacher
+        status: body.status,
       },
     });
-    return NextResponse.json(student, { status: 200 });
+
+    return NextResponse.json(updatedStudent);
   } catch (error: any) {
-    console.error("Error updating student:", error);
-    return NextResponse.json(
-      { error: "Failed to update student", message: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// 🔹 Delete student
 export async function DELETE(
   req: Request,
   { params }: { params: { id: string } }
 ) {
+  const id = parseInt(params.id);
+
   try {
-    await prisma.student.delete({
-      where: { id: Number(params.id) },
+    const deletedStudent = await prisma.student.delete({
+      where: { id },
     });
-    return NextResponse.json(
-      { message: "Student deleted successfully" },
-      { status: 200 }
-    );
+
+    return NextResponse.json({
+      message: 'Student deleted successfully',
+      deletedStudent,
+    });
   } catch (error: any) {
-    console.error("Error deleting student:", error);
-    return NextResponse.json(
-      { error: "Failed to delete student", message: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

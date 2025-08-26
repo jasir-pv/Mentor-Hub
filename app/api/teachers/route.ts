@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 // GET all teachers
 export async function GET() {
-      console.log("DB URL:", process.env.DATABASE_URL);
+     
   try {
     console.log("Fetching teachers from DB...");
     const teachers = await prisma.teacher.findMany({
